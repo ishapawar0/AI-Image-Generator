@@ -23,7 +23,7 @@ export const textMessageController = async (req, res) => {
       return res.status(404).json({ success: false, message: "Chat not found" });
     }
 
-    // ✨ Title Summary Logic: Agar pehla message hai toh Chat Name update karo
+    // ✨ Title Summary Logic
     if (chat.messages.length === 0) {
       chat.name = prompt.trim().slice(0, 30) + (prompt.length > 30 ? "..." : "");
     }
@@ -35,7 +35,7 @@ export const textMessageController = async (req, res) => {
       isImage: false,
     });
 
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-3.6-flash" });
     const result = await model.generateContent(prompt);
     const responseText = result.response.text();
 
@@ -81,7 +81,6 @@ export const imageMessageController = async (req, res) => {
       return res.status(404).json({ success: false, message: "Chat not found" });
     }
 
-    // ✨ Title Summary Logic: Agar pehla message hai toh Chat Name update karo
     if (chat.messages.length === 0) {
       chat.name = prompt.trim().slice(0, 30) + (prompt.length > 30 ? "..." : "");
     }
@@ -94,8 +93,8 @@ export const imageMessageController = async (req, res) => {
       isImage: false,
     });
 
-    // Generate direct ImageKit AI URL using prompt
-    const ikEndpoint = process.env.IMAGEKIT_URL_ENDPOINT || process.env.IMAGEKI_URL_ENDPOINT;
+    // Cleaned Endpoint URL handling
+    const ikEndpoint = process.env.IMAGEKIT_URL_ENDPOINT;
     const cleanPrompt = encodeURIComponent(prompt.trim());
     
     // Direct ImageKit transformation URL
